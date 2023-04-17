@@ -1,0 +1,35 @@
+//1. Реализуйте 3 метода, чтобы в каждом из них получить разные исключения
+//исключение типа NullPointerException:
+public static void throwNullPointerException() {
+    String str = null;
+    str.length(); // вызывает NullPointerException
+}
+
+//исключение типа IndexOutOfBoundsException:
+public static void throwIndexOutOfBoundsException() {
+    int[] arr = {1, 2, 3};
+    int element = arr[3]; // вызывает IndexOutOfBoundsException
+}
+
+//исключение типа NumberFormatException:
+public static void throwNumberFormatException() {
+    String str = "abc";
+    int num = Integer.parseInt(str); // вызывает NumberFormatException
+}
+
+
+//2.Реализуйте метод, принимающий в качестве аргументов два целочисленных массива, 
+//и возвращающий новый массив, каждый элемент которого равен разности элементов двух входящих массивов в той же ячейке. 
+//Если длины массивов не равны, необходимо как-то оповестить пользователя.
+
+public static int[] diffArrays(int[] arr1, int[] arr2) throws IllegalArgumentException {
+    if (arr1.length != arr2.length) {
+        throw new IllegalArgumentException("Arrays have different lengths");
+    }
+    
+    int[] diff = new int[arr1.length];
+    for (int i = 0; i < arr1.length; i++) {
+        diff[i] = arr1[i] - arr2[i];
+    }
+    return diff;
+}
