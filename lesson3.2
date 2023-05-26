@@ -1,0 +1,60 @@
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+public class Main {
+    private static final int REQUIRED_FIELDS_COUNT = 6;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите данные в формате: Фамилия Имя Отчество дата_рождения номер_телефона пол");
+        String input = scanner.nextLine();
+
+        String[] fields = input.split(" ");
+        if (fields.length != REQUIRED_FIELDS_COUNT) {
+            System.err.println("Ошибка! Введено неверное количество полей.");
+            return;
+        }
+
+        String surname = fields[0];
+        String name = fields[1];
+        String patronymic = fields[2];
+        LocalDate birthDate;
+        try {
+            birthDate = LocalDate.parse(fields[3], DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+        } catch (Exception e) {
+            System.err.println("Ошибка! Неверный формат даты рождения.");
+            return;
+        }
+        long phoneNumber;
+        try {
+            phoneNumber = Long.parseLong(fields[4]);
+        } catch (NumberFormatException e) {
+            System.err.println("Ошибка! Неверный формат номера телефона.");
+            return;
+        }
+        char gender;
+        if (fields[5].length() != 1 || !Character.isLetter(fields[5].charAt(0))) {
+            System.err.println("Ошибка! Неверный формат пола.");
+            return;
+        }
+        gender = fields[5].charAt(0);
+
+        String fileName = surname + ".txt";
+        try (FileWriter writer = new FileWriter(fileName, true)) {
+            String data = String.format("%s%s%s%s %d%s\n",
+                    surname, name, patronymic,
+                    birthDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+                    phoneNumber, gender);
+            writer.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        System.out.println("Данные успешно записаны в файл " + fileName);
+    }
+}
